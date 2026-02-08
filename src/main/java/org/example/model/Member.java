@@ -1,4 +1,11 @@
 package org.example.model;
+
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+
 /*
 *   Член клуба (Member):
 	id (уникальный идентификатор, например UUID).
@@ -9,11 +16,6 @@ package org.example.model;
 	membershipEndDate (дата окончания действия абонемента).
 	activeTrainings (список ID записанных тренировок)..
  */
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
 
 public class Member {
 
@@ -96,7 +98,14 @@ public class Member {
 
     @Override
     public String toString() {
-        return String.format("Member: id=%s, fullName=%s, dateOfBirth=%s, type=%s, membershipStartDate=%s, membershipEndDate=%s, activeTrainings=%d",
+        return String.format("Member: \n" +
+                        "  id=%s,\n" +
+                        "  fullName=%s,\n" +
+                        "  dateOfBirth=%s,\n" +
+                        "  type=%s,\n" +
+                        " membershipStartDate=%s,\n" +
+                        "  membershipEndDate=%s,\n" +
+                        "  activeTrainings=%d",
                 id, fullName, dateOfBirth, type, membershipStartDate, membershipEndDate, activeTrainings.size());
     }
 

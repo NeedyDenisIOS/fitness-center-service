@@ -1,4 +1,12 @@
 package org.example.model;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+
 /*
 *   Тренировка (Workout):
 	id (уникальный идентификатор).
@@ -9,13 +17,6 @@ package org.example.model;
 	currentParticipants (список ID записанных участников).
 	status (статус: SCHEDULED, COMPLETED, CANCELLED)..
  */
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
 
 public class Workout {
 
@@ -92,7 +93,14 @@ public class Workout {
 
     @Override
     public String toString() {
-        return String.format("Workout: id=%s, title=%s, trainerName=%s, schedule=%s, maxParticipants=%d, currentParticipants=%d, status=%s",
+        return String.format("Workout:\n" +
+                        " id=%s,\n" +
+                        " title=%s,\n" +
+                        " trainerName=%s,\n" +
+                        " schedule=%s,\n" +
+                        " maxParticipants=%d,\n" +
+                        " currentParticipants=%d,\n" +
+                        " status=%s",
                 id, title, trainerName, schedule, maxParticipants, currentParticipants.size(), status);
     }
 
