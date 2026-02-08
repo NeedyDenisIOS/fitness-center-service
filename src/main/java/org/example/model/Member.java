@@ -7,7 +7,7 @@ package org.example.model;
 	membershipType (тип абонемента: SINGLE, MONTHLY, YEARLY).
 	membershipStartDate (дата начала действия абонемента).
 	membershipEndDate (дата окончания действия абонемента).
-	activeTrainings (список ID записанных тренировок).
+	activeTrainings (список ID записанных тренировок)..
  */
 import java.time.LocalDate;
 import java.util.HashSet;

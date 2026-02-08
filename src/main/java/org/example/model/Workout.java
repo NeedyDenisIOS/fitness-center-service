@@ -7,7 +7,7 @@ package org.example.model;
 	schedule (расписание, LocalDateTime).
 	maxParticipants (максимальное количество участников).
 	currentParticipants (список ID записанных участников).
-	status (статус: SCHEDULED, COMPLETED, CANCELLED).
+	status (статус: SCHEDULED, COMPLETED, CANCELLED)..
  */
 
 import java.time.LocalDate;
