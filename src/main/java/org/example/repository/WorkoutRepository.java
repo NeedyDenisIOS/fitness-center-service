@@ -5,37 +5,46 @@ import org.example.model.Workout;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class WorkoutRepository {
 
-    private final LinkedList<Workout> workouts = new LinkedList<>();
+    private final List<Workout> workouts = new LinkedList<>();
+
+    private static final WorkoutRepository INSTANCE = new WorkoutRepository();
+
+    private WorkoutRepository() {}
+
+    public static WorkoutRepository getInstance() {
+        return INSTANCE;
+    }
 
     public void add(Workout workout) {
         workouts.add(workout);
     }
 
-    public Workout getById(UUID id) {
+    public Optional<Workout> getById(UUID id) {
         for (Workout workout : workouts) {
             if (workout.getId().equals(id)) {
-                return workout;
+                return Optional.of(workout);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public List<Workout> getListOfWorkouts() {
         return workouts;
     }
 
-    public Workout getByTitle(String title) {
+    public Optional<Workout> getByTitle(String title) {
         for (Workout workout : workouts) {
             if (workout.getTitle().equals(title)) {
-                return workout;
+                return Optional.of(workout);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public List<Workout> findByTitleContaining(String title) {
@@ -60,20 +69,7 @@ public class WorkoutRepository {
                 .collect(Collectors.toList());
     }
 
-
     public void deleteById(UUID id) {
         workouts.removeIf(workout -> workout.getId().equals(id));
     }
-
-    public void save(Workout updateWorkout) {
-        for (int i = 0; i < workouts.size(); i++) {
-            if (workouts.get(i).getId().equals(updateWorkout.getId())) {
-                workouts.set(i, updateWorkout);
-                return;
-            }
-        }
-        workouts.add(updateWorkout);
-    }
-
-
 }

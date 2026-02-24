@@ -5,6 +5,7 @@ import org.example.model.Workout;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -39,6 +40,7 @@ public class WorkoutValidator {
     }
 
     public void validateScheduleNotInPast(LocalDateTime schedule) {
+        validateSchedule(schedule);
         if (schedule.isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("Cannot modify workout in the past");
         }
@@ -46,7 +48,7 @@ public class WorkoutValidator {
 
     public void validateStatus(Status status) {
         if (status != Status.SCHEDULED) {
-            throw new IllegalArgumentException("You cannot change an already started or cancelled workout.");
+            throw new WorkoutException("You cannot change an already started or cancelled workout.");
         }
     }
 
@@ -56,16 +58,17 @@ public class WorkoutValidator {
         }
     }
 
-    public void validatorCurrentParticipants(Set<UUID> currentParticipants) {
+    public void validateCurrentParticipants(Set<UUID> currentParticipants) {
         if (!currentParticipants.isEmpty()) {
             throw new IllegalArgumentException("List of current participants must be empty for delete");
         }
     }
 
-    public void validatorWorkout(Workout workout) {
-        if (workout == null) {
+    public Workout validatorWorkout(Optional<Workout> workout) {
+        if (workout.isEmpty()) {
             throw new IllegalArgumentException("Workout not found");
         }
+        return workout.get();
     }
 
     public void validatorWorkoutList(List<Workout> workouts) {

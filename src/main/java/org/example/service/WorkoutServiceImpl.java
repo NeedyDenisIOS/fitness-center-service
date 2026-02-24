@@ -26,8 +26,8 @@ public class WorkoutServiceImpl implements WorkoutService {
     private final WorkoutRepository workoutRepository;
     private final WorkoutValidator workoutValidator;
 
-    public WorkoutServiceImpl(WorkoutRepository workoutRepository, WorkoutValidator workoutValidator) {
-        this.workoutRepository = workoutRepository;
+    public WorkoutServiceImpl(WorkoutValidator workoutValidator) {
+        this.workoutRepository = WorkoutRepository.getInstance();
         this.workoutValidator = workoutValidator;
     }
 
@@ -35,12 +35,10 @@ public class WorkoutServiceImpl implements WorkoutService {
     public Workout addNewWorkout(String title, String trainerName, LocalDateTime schedule, int maxParticipants) {
         workoutValidator.validateBasicParameters(title, trainerName, schedule, maxParticipants);
         Workout workout = new Workout(
-                null,
                 title,
                 trainerName,
                 schedule,
                 maxParticipants,
-                new HashSet<>(),
                 Status.SCHEDULED
         );
         workoutRepository.add(workout);
@@ -51,10 +49,10 @@ public class WorkoutServiceImpl implements WorkoutService {
     public void deleteWorkout(UUID id) {
         workoutValidator.validateId(id);
 
-        Workout workout = workoutRepository.getById(id);
+        Workout workout = workoutValidator.validatorWorkout(workoutRepository.getById(id));
 
         workoutValidator.validateStatus(workout.getStatus());
-        workoutValidator.validatorCurrentParticipants(workout.getCurrentParticipants());
+        workoutValidator.validateCurrentParticipants(workout.getCurrentParticipants());
 
         workoutRepository.deleteById(id);
     }
@@ -64,14 +62,13 @@ public class WorkoutServiceImpl implements WorkoutService {
         workoutValidator.validateId(id);
         workoutValidator.validateTitle(title);
 
-        Workout workout = workoutRepository.getById(id);
+        Workout workout = workoutValidator.validatorWorkout(workoutRepository.getById(id));
 
-        workoutValidator.validatorWorkout(workout);
         workoutValidator.validateStatus(workout.getStatus());
         workoutValidator.validateScheduleNotInPast(workout.getSchedule());
 
         workout.setTitle(title.trim());
-        workoutRepository.save(workout);
+
         return workout;
     }
 
@@ -80,14 +77,13 @@ public class WorkoutServiceImpl implements WorkoutService {
         workoutValidator.validateId(id);
         workoutValidator.validateSchedule(schedule);
 
-        Workout workout = workoutRepository.getById(id);
+        Workout workout = workoutValidator.validatorWorkout(workoutRepository.getById(id));
 
-        workoutValidator.validatorWorkout(workout);
         workoutValidator.validateStatus(workout.getStatus());
         workoutValidator.validateScheduleNotInPast(workout.getSchedule());
 
         workout.setSchedule(schedule);
-        workoutRepository.save(workout);
+
         return workout;
     }
 
@@ -96,37 +92,14 @@ public class WorkoutServiceImpl implements WorkoutService {
         workoutValidator.validateId(id);
         workoutValidator.validateMaxParticipants(maxParticipants);
 
-        Workout workout = workoutRepository.getById(id);
+        Workout workout = workoutValidator.validatorWorkout(workoutRepository.getById(id));
 
-        workoutValidator.validatorWorkout(workout);
         workoutValidator.validateStatus(workout.getStatus());
         workoutValidator.validateScheduleNotInPast(workout.getSchedule());
 
         workout.setMaxParticipants(maxParticipants);
-        workoutRepository.save(workout);
+
         return workout;
-    }
-
-    @Override
-    public Workout updateWorkout(UUID id, int choice, String title, int maxParticipants, LocalDateTime schedule) {
-        workoutValidator.validateId(id);
-
-        Workout workout = workoutRepository.getById(id);
-
-        System.out.println("The menu for changing the workout:\n");
-        System.out.println("Enter the desired number to select the field you want to change.\n");
-        System.out.println("1. Change the name of the workout.\n");
-        System.out.println("2. Change the maximum number of training participants.\n");
-        System.out.println("3. Change the training time.\n");
-        System.out.println("0. If you want to go back to the main menu.\n");
-
-        return switch (choice) {
-            case 1 -> updateTitle(id, title);
-            case 2 -> updateMaxParticipants(id, maxParticipants);
-            case 3 -> updateSchedule(id, schedule);
-            case 0 -> workout;
-            default -> throw new IllegalArgumentException("Invalid choice, try again.");
-        };
     }
 
     @Override
