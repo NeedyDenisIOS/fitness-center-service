@@ -46,9 +46,9 @@ public class WorkoutValidator {
         }
     }
 
-    public void validateStatus(Status status) {
+    public void validateStatus(Status status) throws WorkoutValidationException {
         if (status != Status.SCHEDULED) {
-            throw new WorkoutException("You cannot change an already started or cancelled workout.");
+            throw new WorkoutValidationException("You cannot change an already started or cancelled workout.");
         }
     }
 
@@ -64,9 +64,9 @@ public class WorkoutValidator {
         }
     }
 
-    public Workout validatorWorkout(Optional<Workout> workout) {
+    public Workout validatorWorkout(Optional<Workout> workout) throws WorkoutValidationException {
         if (workout.isEmpty()) {
-            throw new IllegalArgumentException("Workout not found");
+            throw new WorkoutValidationException("Workout not found");
         }
         return workout.get();
     }

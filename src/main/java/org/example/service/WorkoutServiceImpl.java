@@ -4,6 +4,7 @@ import org.example.model.Status;
 import org.example.model.Workout;
 import org.example.repository.WorkoutRepository;
 import org.example.service.impl.WorkoutService;
+import org.example.validation.WorkoutValidationException;
 import org.example.validation.WorkoutValidator;
 
 import java.time.LocalDate;
@@ -46,7 +47,7 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     @Override
-    public void deleteWorkout(UUID id) {
+    public void deleteWorkout(UUID id) throws WorkoutValidationException {
         workoutValidator.validateId(id);
 
         Workout workout = workoutValidator.validatorWorkout(workoutRepository.getById(id));
@@ -58,7 +59,7 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     @Override
-    public Workout updateTitle(UUID id, String title) {
+    public Workout updateTitle(UUID id, String title) throws WorkoutValidationException {
         workoutValidator.validateId(id);
         workoutValidator.validateTitle(title);
 
@@ -73,7 +74,7 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     @Override
-    public Workout updateSchedule(UUID id, LocalDateTime schedule) {
+    public Workout updateSchedule(UUID id, LocalDateTime schedule) throws WorkoutValidationException {
         workoutValidator.validateId(id);
         workoutValidator.validateSchedule(schedule);
 
@@ -88,7 +89,7 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     @Override
-    public Workout updateMaxParticipants(UUID id, int maxParticipants) {
+    public Workout updateMaxParticipants(UUID id, int maxParticipants) throws WorkoutValidationException {
         workoutValidator.validateId(id);
         workoutValidator.validateMaxParticipants(maxParticipants);
 
@@ -155,13 +156,15 @@ public class WorkoutServiceImpl implements WorkoutService {
     public List<Workout> getWorkoutsSortedByDate(boolean ascending) {
         List<Workout> workouts = workoutRepository.getListOfWorkouts();
 
+        Comparator<Workout> comparator = Comparator.comparing(Workout::getSchedule);
+
         if (ascending) {
             return workouts.stream()
-                    .sorted(Comparator.comparing(Workout::getSchedule))
+                    .sorted(comparator)
                     .collect(Collectors.toList());
         } else {
             return workouts.stream()
-                    .sorted(Comparator.comparing(Workout::getSchedule).reversed())
+                    .sorted(comparator.reversed())
                     .collect(Collectors.toList());
         }
     }
