@@ -157,16 +157,13 @@ public class WorkoutServiceImpl implements WorkoutService {
         List<Workout> workouts = workoutRepository.getListOfWorkouts();
 
         Comparator<Workout> comparator = Comparator.comparing(Workout::getSchedule);
-
-        if (ascending) {
-            return workouts.stream()
-                    .sorted(comparator)
-                    .collect(Collectors.toList());
-        } else {
-            return workouts.stream()
-                    .sorted(comparator.reversed())
-                    .collect(Collectors.toList());
+        if (!ascending) {
+            comparator = comparator.reversed();
         }
+
+        return workouts.stream()
+                .sorted(comparator)
+                .collect(Collectors.toList());
     }
 
     @Override
