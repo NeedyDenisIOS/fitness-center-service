@@ -7,6 +7,9 @@ import org.example.repository.MemberRepository;
 import org.example.repository.WorkoutRepository;
 import org.example.service.impl.MemberService;
 import org.example.validation.*;
+import org.example.validation.exception.DataNotFoundException;
+import org.example.validation.exception.MemberValidationException;
+import org.example.validation.exception.WorkoutValidationException;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -52,7 +55,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void deleteMember(UUID memberId) throws MemberValidationException {
+    public void deleteMember(UUID memberId) throws MemberValidationException, DataNotFoundException {
         memberValidator.validateId(memberId);
 
         Member member = memberRepository.getById(memberId)
@@ -63,7 +66,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void enrollMember(UUID memberId, UUID workoutId) throws WorkoutValidationException, MemberValidationException {
+    public void enrollMember(UUID memberId, UUID workoutId) throws WorkoutValidationException, MemberValidationException, DataNotFoundException {
         memberValidator.validateId(memberId);
         workoutValidator.validateId(workoutId);
 
@@ -82,7 +85,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void cancelEnroll(UUID memberId, UUID workoutId) throws WorkoutValidationException, MemberValidationException {
+    public void cancelEnroll(UUID memberId, UUID workoutId) throws WorkoutValidationException, MemberValidationException, DataNotFoundException {
         memberValidator.validateId(memberId);
         workoutValidator.validateId(workoutId);
 
@@ -99,7 +102,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void checkSubscription(UUID memberId) throws MemberValidationException {
+    public void checkSubscription(UUID memberId) throws MemberValidationException, DataNotFoundException {
         memberValidator.validateId(memberId);
 
         Member member = memberRepository.getById(memberId)
@@ -111,7 +114,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void displayCurrentParticipants(UUID workoutId) throws WorkoutValidationException {
+    public void displayCurrentParticipants(UUID workoutId) throws WorkoutValidationException, DataNotFoundException {
         workoutValidator.validateId(workoutId);
 
         Workout workout = workoutRepository.getById(workoutId)

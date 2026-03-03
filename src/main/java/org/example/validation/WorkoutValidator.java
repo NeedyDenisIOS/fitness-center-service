@@ -2,10 +2,10 @@ package org.example.validation;
 
 import org.example.model.Status;
 import org.example.model.Workout;
+import org.example.validation.exception.WorkoutValidationException;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 

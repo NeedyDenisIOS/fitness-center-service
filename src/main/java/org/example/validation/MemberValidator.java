@@ -2,11 +2,11 @@ package org.example.validation;
 
 import org.example.model.Member;
 import org.example.model.MembershipType;
+import org.example.validation.exception.MemberValidationException;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -79,8 +79,7 @@ public class MemberValidator {
         if (membershipEndDate == null) {
             throw new MemberValidationException("Membership end date is required");
         }
-        long result = ChronoUnit.DAYS.between(LocalDate.now(), membershipEndDate);
-        if (result < 0) {
+        if (membershipEndDate.isBefore(LocalDate.now())) {
             throw new MemberValidationException("The subscription period has expired.");
         }
     }

@@ -1,6 +1,6 @@
-package org.example.validation;
+package org.example.validation.exception;
 
-public class DataNotFoundException extends RuntimeException {
+public class DataNotFoundException extends Exception {
 
     public DataNotFoundException(String message) {
         super(message);
