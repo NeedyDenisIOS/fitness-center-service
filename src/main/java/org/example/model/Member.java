@@ -28,16 +28,16 @@ public class Member {
     private LocalDate membershipEndDate;
     private Set<UUID> activeTrainings;
 
-    public Member(UUID id, String fullName, LocalDate dateOfBirth,
+    public Member(String fullName, LocalDate dateOfBirth,
                   MembershipType type, LocalDate membershipStartDate,
-                  LocalDate membershipEndDate, Set<UUID> activeTrainings) {
-        this.id = id == null ? UUID.randomUUID() : id;
+                  LocalDate membershipEndDate) {
+        this.id = UUID.randomUUID();
         this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
         this.type = type;
         this.membershipStartDate = membershipStartDate;
         this.membershipEndDate = membershipEndDate;
-        this.activeTrainings = activeTrainings;
+        this.activeTrainings = new HashSet<>();
     }
 
     public UUID getId() {
@@ -94,6 +94,14 @@ public class Member {
         } else {
             this.activeTrainings = new HashSet<>(activeTrainings);
         }
+    }
+
+    public void addTraining(UUID workoutId) {
+        activeTrainings.add(workoutId);
+    }
+
+    public void deleteTraining(UUID workoutId) {
+        activeTrainings.remove(workoutId);
     }
 
     @Override

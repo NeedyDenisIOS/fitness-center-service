@@ -29,13 +29,13 @@ public class Workout {
     private Set<UUID> currentParticipants;
     private Status status;
 
-    public Workout(UUID id, String title, String trainerName, LocalDateTime schedule, int maxParticipants, Set<UUID> currentParticipants, Status status) {
-        this.id = id == null ? UUID.randomUUID() : id;
+    public Workout(String title, String trainerName, LocalDateTime schedule, int maxParticipants, Status status) {
+        this.id = UUID.randomUUID();
         this.title = title;
         this.trainerName = trainerName;
         this.schedule = schedule;
         this.maxParticipants = maxParticipants;
-        this.currentParticipants = currentParticipants;
+        this.currentParticipants = new HashSet<>();
         this.status = status;
     }
 
@@ -61,6 +61,10 @@ public class Workout {
 
     public Set<UUID> getCurrentParticipants() {
         return new HashSet<>(currentParticipants);
+    }
+
+    public int getParticipantsCount() {
+        return currentParticipants.size();
     }
 
     public Status getStatus() {
@@ -89,6 +93,14 @@ public class Workout {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public void addMember(UUID memberId) {
+        currentParticipants.add(memberId);
+    }
+
+    public void deleteMember(UUID memberId) {
+        currentParticipants.remove(memberId);
     }
 
     @Override

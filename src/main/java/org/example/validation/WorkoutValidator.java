@@ -83,4 +83,11 @@ public class WorkoutValidator {
         validateSchedule(schedule);
         validateMaxParticipants(maxParticipants);
     }
+
+    public void validateMaxParticipants(int maxParticipants, int currentParticipants) throws WorkoutValidationException {
+        if (currentParticipants == maxParticipants) {
+            throw new WorkoutValidationException("There are no available seats for this workout.");
+        }
+    }
+
 }
