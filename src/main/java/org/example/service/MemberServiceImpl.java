@@ -6,10 +6,7 @@ import org.example.model.MembershipType;
 import org.example.repository.MemberRepository;
 import org.example.repository.WorkoutRepository;
 import org.example.service.impl.MemberService;
-import org.example.validation.MemberValidationException;
-import org.example.validation.MemberValidator;
-import org.example.validation.WorkoutValidationException;
-import org.example.validation.WorkoutValidator;
+import org.example.validation.*;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -40,6 +37,7 @@ public class MemberServiceImpl implements MemberService {
         this.workoutValidator = workoutValidator;
     }
 
+    @Override
     public Member addNewMember(String fullName, LocalDate dateOfBirth, MembershipType type, LocalDate membershipStartDate, LocalDate membershipEndDate) throws MemberValidationException {
         memberValidator.validateBasicParameters(fullName, dateOfBirth, type, membershipStartDate, membershipEndDate);
         Member member = new Member(
@@ -53,21 +51,27 @@ public class MemberServiceImpl implements MemberService {
         return member;
     }
 
-    public void deleteMember(UUID id) throws MemberValidationException {
-        memberValidator.validateId(id);
+    @Override
+    public void deleteMember(UUID memberId) throws MemberValidationException {
+        memberValidator.validateId(memberId);
 
-        Member member = memberValidator.memberValidator(memberRepository.getById(id));
+        Member member = memberRepository.getById(memberId)
+                .orElseThrow(() -> new DataNotFoundException("Member", memberId));
 
         memberValidator.validateActiveTrainings(member.getActiveTrainings());
-        memberRepository.deleteById(id);
+        memberRepository.deleteById(memberId);
     }
 
+    @Override
     public void enrollMember(UUID memberId, UUID workoutId) throws WorkoutValidationException, MemberValidationException {
         memberValidator.validateId(memberId);
         workoutValidator.validateId(workoutId);
 
-        Workout workout = workoutValidator.validatorWorkout(workoutRepository.getById(workoutId));
-        Member member = memberValidator.memberValidator((memberRepository.getById(memberId)));
+        Workout workout = workoutRepository.getById(workoutId)
+                .orElseThrow(() -> new DataNotFoundException("Workout", workoutId));
+
+        Member member = memberRepository.getById(memberId)
+                        .orElseThrow(() -> new DataNotFoundException("Member", memberId));
 
         memberValidator.validateSubscriptionActivity(member.getMembershipEndDate());
         workoutValidator.validateMaxParticipants(workout.getMaxParticipants(), workout.getParticipantsCount());
@@ -77,12 +81,16 @@ public class MemberServiceImpl implements MemberService {
         workout.addMember(memberId);
     }
 
+    @Override
     public void cancelEnroll(UUID memberId, UUID workoutId) throws WorkoutValidationException, MemberValidationException {
         memberValidator.validateId(memberId);
         workoutValidator.validateId(workoutId);
 
-        Workout workout = workoutValidator.validatorWorkout(workoutRepository.getById(workoutId));
-        Member member = memberValidator.memberValidator((memberRepository.getById(memberId)));
+        Workout workout = workoutRepository.getById(workoutId)
+                .orElseThrow(() -> new DataNotFoundException("Workout", workoutId));
+
+        Member member = memberRepository.getById(memberId)
+                .orElseThrow(() -> new DataNotFoundException("Member", memberId));
 
         memberValidator.validateMemberIsEnrolled(member.getActiveTrainings(), workoutId);
 
@@ -90,20 +98,24 @@ public class MemberServiceImpl implements MemberService {
         workout.deleteMember(memberId);
     }
 
+    @Override
     public void checkSubscription(UUID memberId) throws MemberValidationException {
         memberValidator.validateId(memberId);
 
-        Member member = memberValidator.memberValidator((memberRepository.getById(memberId)));
+        Member member = memberRepository.getById(memberId)
+                .orElseThrow(() -> new DataNotFoundException("Member", memberId));
 
         memberValidator.validateSubscriptionActivity(member.getMembershipEndDate());
 
         System.out.println("Your subscription is valid until " + member.getMembershipEndDate());
     }
 
+    @Override
     public void displayCurrentParticipants(UUID workoutId) throws WorkoutValidationException {
         workoutValidator.validateId(workoutId);
 
-        Workout workout = workoutValidator.validatorWorkout(workoutRepository.getById(workoutId));
+        Workout workout = workoutRepository.getById(workoutId)
+                .orElseThrow(() -> new DataNotFoundException("Workout", workoutId));
 
         Set<UUID> currentParticipants = workout.getCurrentParticipants();
 

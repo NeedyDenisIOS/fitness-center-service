@@ -28,9 +28,6 @@ public class MemberValidator {
         if (dateOfBirth == null) {
             throw new MemberValidationException("The date of birth of the member is required.");
         }
-    }
-
-    public void validateFullNameNotInFuture(LocalDate dateOfBirth) throws MemberValidationException {
         if (dateOfBirth.isAfter(LocalDate.now())) {
             throw new MemberValidationException("Date of birth can't be in future.");
         }
@@ -54,19 +51,15 @@ public class MemberValidator {
         if (endDate.isBefore(startDate)) {
             throw new MemberValidationException("End date must be after start date.");
         }
+        if (startDate.isAfter(endDate)) {
+            throw new MemberValidationException("Start date cannot be after end date.");
+        }
     }
 
     public void activeTrainingsValidator(List<Member> members) throws MemberValidationException {
         if (members.isEmpty()) {
             throw new MemberValidationException("No members found");
         }
-    }
-
-    public Member memberValidator(Optional<Member> member) throws MemberValidationException {
-        if (member.isEmpty()) {
-            throw new MemberValidationException("Member not found");
-        }
-        return member.get();
     }
 
     public void validateBasicParameters(String fullName, LocalDate dateOfBirth, MembershipType type, LocalDate membershipStartDate, LocalDate membershipEndDate) throws MemberValidationException {

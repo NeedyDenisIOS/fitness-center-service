@@ -64,13 +64,6 @@ public class WorkoutValidator {
         }
     }
 
-    public Workout validatorWorkout(Optional<Workout> workout) throws WorkoutValidationException {
-        if (workout.isEmpty()) {
-            throw new WorkoutValidationException("Workout not found");
-        }
-        return workout.get();
-    }
-
     public void validatorWorkoutList(List<Workout> workouts) throws WorkoutValidationException {
         if (workouts.isEmpty()) {
             throw new WorkoutValidationException("No workouts found");
@@ -87,6 +80,9 @@ public class WorkoutValidator {
     public void validateMaxParticipants(int maxParticipants, int currentParticipants) throws WorkoutValidationException {
         if (currentParticipants == maxParticipants) {
             throw new WorkoutValidationException("There are no available seats for this workout.");
+        }
+        if (currentParticipants > maxParticipants) {
+            throw new WorkoutValidationException("The number of participants is more than required.");
         }
     }
 
