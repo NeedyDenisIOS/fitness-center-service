@@ -15,7 +15,8 @@ public class WorkoutRepository {
 
     private static final WorkoutRepository INSTANCE = new WorkoutRepository();
 
-    private WorkoutRepository() {}
+    private WorkoutRepository() {
+    }
 
     public static WorkoutRepository getInstance() {
         return INSTANCE;

@@ -2,10 +2,10 @@ package org.example.validation;
 
 import org.example.model.Status;
 import org.example.model.Workout;
+import org.example.validation.exception.WorkoutValidationException;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -64,13 +64,6 @@ public class WorkoutValidator {
         }
     }
 
-    public Workout validatorWorkout(Optional<Workout> workout) throws WorkoutValidationException {
-        if (workout.isEmpty()) {
-            throw new WorkoutValidationException("Workout not found");
-        }
-        return workout.get();
-    }
-
     public void validatorWorkoutList(List<Workout> workouts) throws WorkoutValidationException {
         if (workouts.isEmpty()) {
             throw new WorkoutValidationException("No workouts found");
@@ -83,4 +76,14 @@ public class WorkoutValidator {
         validateSchedule(schedule);
         validateMaxParticipants(maxParticipants);
     }
+
+    public void validateMaxParticipants(int maxParticipants, int currentParticipants) throws WorkoutValidationException {
+        if (currentParticipants == maxParticipants) {
+            throw new WorkoutValidationException("There are no available seats for this workout.");
+        }
+        if (currentParticipants > maxParticipants) {
+            throw new WorkoutValidationException("The number of participants is more than required.");
+        }
+    }
+
 }

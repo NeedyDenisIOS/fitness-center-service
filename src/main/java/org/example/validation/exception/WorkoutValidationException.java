@@ -1,4 +1,4 @@
-package org.example.validation;
+package org.example.validation.exception;
 
 public class WorkoutValidationException extends Exception {
 
