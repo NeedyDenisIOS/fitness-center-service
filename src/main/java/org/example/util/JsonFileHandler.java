@@ -17,18 +17,21 @@ public class JsonFileHandler {
         this.dataDirectory = dataDirectory;
         this.objectMapper = new ObjectMapper()
                 .registerModule(new JavaTimeModule());
-
-        new File(dataDirectory).mkdirs();
     }
 
     public <T> void saveList(String fileName, List<T> list) {
+        File directory = new File(dataDirectory);
+
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
         try {
             File file = new File(dataDirectory, fileName);
             objectMapper.writeValue(file, list);
             System.out.println("You have successfully saved the data.");
-        }
-        catch (IOException e) {
-            System.out.println("The data could not be saved.");
+        } catch (IOException e) {
+            System.out.println("The data could not be saved: " + e.getMessage());
         }
     }
 
@@ -41,9 +44,8 @@ public class JsonFileHandler {
 
         try {
             return objectMapper.readValue(file, objectMapper.getTypeFactory().constructCollectionType(List.class, typeElement));
-        }
-        catch (IOException e) {
-            System.out.println("The data could not be loaded.");
+        } catch (IOException e) {
+            System.out.println("The data could not be loaded: " + e.getMessage());
             return new ArrayList<>();
         }
     }
