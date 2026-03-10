@@ -29,18 +29,20 @@ public class MainMenu {
     }
 
     public void printMainMenu() throws DataNotFoundException, WorkoutValidationException, MemberValidationException {
-        System.out.println("Welcome to the fitness center.");
-        System.out.println("1. Adding a new workout to the schedule.");
-        System.out.println("2. Deleting a training session by ID.");
-        System.out.println("3. Editing training data.");
-        System.out.println("4. Adding a new club member.");
-        System.out.println("5. Deleting a club member by ID.");
-        System.out.println("6. Sign up a club member for a training session.");
-        System.out.println("7. Canceling a workout appointment");
-        System.out.println("8. Search for workouts by name, coach, or date.");
-        System.out.println("9. A list of all workouts");
-        System.out.println("10. View the list of members signed up for a specific training session.");
-        System.out.println("0. Exit.");
+        System.out.println("""
+                Welcome to the fitness center.
+                1. Adding a new workout to the schedule.
+                2. Deleting a training session by ID.
+                3. Editing training data.
+                4. Adding a new club member.
+                5. Deleting a club member by ID.
+                6. Sign up a club member for a training session.
+                7. Canceling a workout appointment.
+                8. Search for workouts by name, coach, or date.
+                9. A list of all workouts.
+                10. View the list of members signed up for a specific training session.
+                0. Exit.
+                """);
     }
 
     public int getUserChoice() {
@@ -50,16 +52,18 @@ public class MainMenu {
             return Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException e) {
             System.out.println("Incorrect choice: " + e + " please, try again.");
-            return -1;
+            return 0;
         }
     }
 
     public void editWorkoutMenu(UUID id) throws WorkoutValidationException, DataNotFoundException {
-        System.out.println("Changing training data: ");
-        System.out.println("1. Change title.");
-        System.out.println("2. Change schedule.");
-        System.out.println("3. Change max participants.");
-        System.out.println("0. Exit.");
+        System.out.println("""
+                Changing training data:
+                1. Change title.
+                2. Change schedule.
+                3. Change max participants.
+                0. Exit.
+                """);
 
         int choice = getUserChoice();
 
@@ -98,11 +102,13 @@ public class MainMenu {
     }
 
     public void searchWorkoutMenu() throws WorkoutValidationException, DataNotFoundException {
-        System.out.println("Search workout menu:");
-        System.out.println("1. Find a workout using the title.");
-        System.out.println("2. Find a workout using the trainer name.");
-        System.out.println("3. Find a workout using the schedule.");
-        System.out.println("0. Exit.");
+        System.out.println("""
+                Search workout menu:");
+                1. Find a workout using the title.
+                2. Find a workout using the trainer name.
+                3. Find a workout using the schedule.
+                0. Exit.
+                """);
 
         int choice = getUserChoice();
 
@@ -138,10 +144,12 @@ public class MainMenu {
     }
 
     public void displayWorkoutsMenu() throws WorkoutValidationException, DataNotFoundException {
-        System.out.println("Choose a way to sort the training list: ");
-        System.out.println("1. Sorted by date.");
-        System.out.println("2. Sorted by title.");
-        System.out.println("0. Exit.");
+        System.out.println("""
+                Choose a way to sort the training list:
+                1. Sorted by date.
+                2. Sorted by title.
+                0. Exit.
+                """);
 
         int choice = getUserChoice();
 

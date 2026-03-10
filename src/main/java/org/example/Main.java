@@ -14,19 +14,15 @@ import org.example.validation.exception.WorkoutValidationException;
 
 public class Main {
 
-    public static void main(String[] args) throws DataNotFoundException, WorkoutValidationException, MemberValidationException {
+    public static void main(String[] args) {
 
         MemberValidator memberValidator = new MemberValidator();
         WorkoutValidator workoutValidator = new WorkoutValidator();
 
-        MemberRepository memberRepository = MemberRepository.getInstance();
-        WorkoutRepository workoutRepository = WorkoutRepository.getInstance();
-
         WorkoutServiceImpl workoutService = new WorkoutServiceImpl(workoutValidator);
         MemberServiceImpl memberService = new MemberServiceImpl(memberValidator, workoutValidator);
 
-
-        FileDataService fileDataService = new FileDataService("D:\\Java\\fitness-center-service\\src\\main\\java\\org\\example", memberRepository, workoutRepository);
+        FileDataService fileDataService = new FileDataService("src/main/resources/data");
 
         MainMenu mainMenu = new MainMenu(memberService, workoutService);
 
