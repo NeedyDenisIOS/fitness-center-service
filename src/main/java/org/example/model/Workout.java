@@ -1,5 +1,7 @@
 package org.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -18,9 +20,10 @@ import java.util.UUID;
 	status (статус: SCHEDULED, COMPLETED, CANCELLED)..
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Workout {
 
-    private final UUID id;
+    private UUID id;
 
     private String title;
     private String trainerName;
@@ -28,6 +31,8 @@ public class Workout {
     private int maxParticipants;
     private Set<UUID> currentParticipants;
     private Status status;
+
+    public Workout() {}
 
     public Workout(String title, String trainerName, LocalDateTime schedule, int maxParticipants, Status status) {
         this.id = UUID.randomUUID();

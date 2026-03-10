@@ -1,5 +1,7 @@
 package org.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
@@ -17,9 +19,10 @@ import java.util.UUID;
 	activeTrainings (список ID записанных тренировок)..
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Member {
 
-    private final UUID id;
+    private UUID id;
 
     private String fullName;
     private LocalDate dateOfBirth;
@@ -27,6 +30,8 @@ public class Member {
     private LocalDate membershipStartDate;
     private LocalDate membershipEndDate;
     private Set<UUID> activeTrainings;
+
+    public Member() {}
 
     public Member(String fullName, LocalDate dateOfBirth,
                   MembershipType type, LocalDate membershipStartDate,

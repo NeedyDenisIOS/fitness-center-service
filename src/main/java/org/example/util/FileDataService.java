@@ -13,16 +13,15 @@ public class FileDataService {
     private static final String WORKOUTS_FILE = "workouts.json";
 
     private final JsonFileHandler jsonFileHandler;
-    private final MemberRepository memberRepository;
-    private final WorkoutRepository workoutRepository;
 
-    public FileDataService(String dataDirectory, MemberRepository memberRepository, WorkoutRepository workoutRepository) {
+    public FileDataService(String dataDirectory) {
         this.jsonFileHandler = new JsonFileHandler(dataDirectory);
-        this.workoutRepository = workoutRepository;
-        this.memberRepository = memberRepository;
     }
 
     public void loadData() {
+        MemberRepository memberRepository = MemberRepository.getInstance();
+        WorkoutRepository workoutRepository = WorkoutRepository.getInstance();
+
         List<Member> members = jsonFileHandler.loadList(MEMBERS_FILE, Member.class);
 
         for (Member member : members) {
@@ -37,6 +36,9 @@ public class FileDataService {
     }
 
     public void saveData() {
+        MemberRepository memberRepository = MemberRepository.getInstance();
+        WorkoutRepository workoutRepository = WorkoutRepository.getInstance();
+
         List<Member> members = memberRepository.getListOfMembers();
         List<Workout> workouts = workoutRepository.getListOfWorkouts();
 
